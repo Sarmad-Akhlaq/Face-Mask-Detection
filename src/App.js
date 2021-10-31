@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import {Switch, Route, BrowserRouter } from 'react-router-dom';
 import Login from './components/Pages/Login';
 import Home from './components/Pages/Home';
-import UsersNotWearingMask from './components/Pages/UsersNotWearingMask';
-import UsersWearingMask from './components/Pages/UsersWearingMask';
+import PeopleWearingMask from './components/Pages/PeopleWearingMask';
+import PeopleNotWearingMask from './components/Pages/PeopleNotWearingMask';
 import { AuthListener } from "./firebase/Auth"
 
 function App() {
@@ -23,8 +23,8 @@ function App() {
       <Switch>
         <Route path="/" component={Login} exact />
         <Route path="/home" component={Home} exact />
-        <Route path="/usersnotwearingmask" component={UsersNotWearingMask} />
-        <Route path="/userswearingmask" component={UsersWearingMask} />
+        <Route path="/peoplewearingmask" component={PeopleWearingMask} />
+        <Route path="/peoplenotwearingmask" component={PeopleNotWearingMask} />
       </Switch>
     </BrowserRouter>
   );

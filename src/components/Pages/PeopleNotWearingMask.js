@@ -2,7 +2,7 @@ import { Box } from '@mui/system';
 import React from 'react';
 import NavBar from './Navbar';
 
-const UsersNotWearingMask = () => {
+const PeopleNotWearingMask = () => {
     return (
         <Box sx={{bgcolor: "#212121", height: "100vh"}}>
             <NavBar />
@@ -11,4 +11,4 @@ const UsersNotWearingMask = () => {
     )
 }
 
-export default UsersNotWearingMask;
+export default PeopleNotWearingMask;
