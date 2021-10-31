@@ -29,9 +29,8 @@ const NavBar = () => {
           >
               <Grid>
                 <Button href="/home" color="inherit">Home</Button>
-                <Button href="/photos" color="inherit">Photos</Button>
-                <Button href="/usersnotwearingmask" color="inherit">Users not wearing mask</Button>
-                <Button href="/userswearingmask" color="inherit">Users wearing mask</Button>
+                <Button href="/userswearingmask" color="inherit">People wearing mask</Button>
+                <Button href="/usersnotwearingmask" color="inherit">People not wearing mask</Button>
                 <Button onClick={signOut} sx={{ml:"55px"}} variant="contained" color="error">Log out</Button>
               </Grid>
           </Grid>
