@@ -54,7 +54,7 @@ const Login = ({history}) => {
                 direction="row"
                 justifyContent="center"
                 >
-                <Card style={{width: "350px", marginTop: "180px"}} >
+                <Card style={{width: "350px", marginTop: "18vh"}} >
                     <CardContent>
                         <form>
                             <Grid
@@ -70,7 +70,7 @@ const Login = ({history}) => {
                                 </Grid>
 
                                 <Grid item md={10}>
-                                    <TextField value={form.password} name="password" onChange={handleForm} id="outlined-basic" label="Password" variant="outlined" fullWidth />
+                                    <TextField value={form.password} name="password" type="password" onChange={handleForm} id="outlined-basic" label="Password" variant="outlined" fullWidth />
                                 </Grid>
 
                                 <Grid item md={10}>
