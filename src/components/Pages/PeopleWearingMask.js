@@ -14,8 +14,8 @@ const PeopleWearingMask = () => {
                 justifyContent="center"
                 alignItems="center"
             >
-                <Paper xs={6} sm={{p:25 , bgcolor: "#949494"}}>
-                    <StickyHeadTable />
+                <Paper xs={8} sm={{p:25 , bgcolor: "#949494"}}>
+                    <StickyHeadTable  sort={"mask_on"} />
                 </Paper>
             </Box>
         </Box>

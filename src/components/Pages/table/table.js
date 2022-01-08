@@ -11,30 +11,20 @@ import axios from 'axios';
 import firestore from '../../../firebase';
 import { db } from '../../../firebase/Firestore';
 import { collection, doc, getDocs } from '@firebase/firestore';
+import { Button } from '@material-ui/core';
+import { Image } from 'antd';
 
 const columns = [
-    { id: 'image', label: 'Image', minWidth: 170 },
-    { id: 'date', label: 'Date', minWidth: 100 },
+    { id: 'img_location', label: 'Image' },
+    { id: 'date', label: 'Date' },
     {
-        id: 'message',
+        id: 'messege',
         label: 'Message',
-        minWidth: 170,
-        align: 'right',
         format: (value) => value.toLocaleString('en-US'),
     },
     {
         id: 'status',
         label: 'Status',
-        minWidth: 170,
-        align: 'right',
-
-    },
-    {
-        id: 'button',
-        label: 'Action',
-        minWidth: 170,
-        align: 'right',
-
     },
 ];
 
@@ -43,7 +33,8 @@ function createData(name, code, population, size) {
     return { name, code, population, size, density };
 }
 
-export default function StickyHeadTable() {
+export default function StickyHeadTable(props) {
+    const { sort } = props;
     const [page, setPage] = React.useState(0);
     const userCollectionRef = collection(db, "fyp");
     const [user, setUser] = React.useState([]);
@@ -78,13 +69,14 @@ export default function StickyHeadTable() {
 
 
     return (
-        <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-            <TableContainer sx={{ maxHeight: 400 }}>
+        <Paper sx={{ width: '80vw', fontSize: "100px", color: "yellow", overflow: 'hidden' }}>
+            <TableContainer sx={{ maxHeight: 600 }}>
                 <Table stickyHeader aria-label="sticky table">
                     <TableHead>
                         <TableRow>
                             {columns.map((column) => (
                                 <TableCell
+                                    sx={{ fontSize: "25px", fontWeight: "5px" }}
                                     key={column.id}
                                     align={column.align}
                                     style={{ minWidth: column.minWidth }}
@@ -95,21 +87,41 @@ export default function StickyHeadTable() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {rows
+                        {user
                             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                             .map((row) => {
                                 return (
                                     <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                                        {columns.map((column) => {
+                                        {/* {columns.map((column) => {
                                             const value = row[column.id];
+                                            console.log(row.img_location)
                                             return (
                                                 <TableCell key={column.id} align={column.align}>
-                                                    {column.format && typeof value === 'number'
-                                                        ? column.format(value)
-                                                        : value}
-                                                </TableCell>
+                                                    {value}
+                                                    </TableCell>
                                             );
-                                        })}
+        20                           })} */}
+                                        {
+                                            row.status === sort ?
+                                                (<>
+                                                    <TableCell>
+                                                        <Image
+                                                            width={150}
+                                                            src={row.img_location}
+                                                        />
+                                                        {/* <img src={row.img_location} height="70px" width="100px"></img> */}
+                                                    </TableCell>
+                                                    <TableCell
+                                                        sx={{ fontSize: "25px", fontWeight: "5px" }}>{row.date}</TableCell>
+                                                    <TableCell
+                                                        sx={{ fontSize: "25px", fontWeight: "5px" }}>{row.messege}</TableCell>
+                                                    <TableCell
+                                                        sx={{ fontSize: "25px", fontWeight: "5px" }}>{row.status}</TableCell>
+                                                    {/* <TableCell><Button variant='outlined' color="secondary">View Image</Button></TableCell> */}
+                                                </>) : ""
+                                        }
+
+
                                     </TableRow>
                                 );
                             })}

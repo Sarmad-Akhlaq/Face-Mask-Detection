@@ -5,6 +5,8 @@ import Home from './components/Pages/Home';
 import PeopleWearingMask from './components/Pages/PeopleWearingMask';
 import PeopleNotWearingMask from './components/Pages/PeopleNotWearingMask';
 import { AuthListener } from "./firebase/Auth"
+import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
+
 
 function App() {
   const [user, setUser] = useState("")

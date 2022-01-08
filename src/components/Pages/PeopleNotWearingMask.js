@@ -15,7 +15,7 @@ const PeopleNotWearingMask = () => {
                 alignItems="center"
             >
                 <Paper xs={6} sm={{p:25 , bgcolor: "#949494"}}>
-                    <StickyHeadTable />
+                    <StickyHeadTable sort={"mask_off"} />
                 </Paper>
             </Box>
         </Box>
