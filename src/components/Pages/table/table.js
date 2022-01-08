@@ -10,6 +10,7 @@ import TableRow from '@mui/material/TableRow';
 import axios from 'axios';
 import firestore from '../../../firebase';
 import { db } from '../../../firebase/Firestore';
+import { collection, doc, getDocs } from '@firebase/firestore';
 
 const columns = [
     { id: 'image', label: 'Image', minWidth: 170 },
@@ -44,12 +45,14 @@ function createData(name, code, population, size) {
 
 export default function StickyHeadTable() {
     const [page, setPage] = React.useState(0);
+    const userCollectionRef = collection(db, "fyp");
+    const [user, setUser] = React.useState([]);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const rows = [];
 
     // const ref = db.collection("fyp")
     // console.log("fyp", ref)
-    
+
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
@@ -58,7 +61,21 @@ export default function StickyHeadTable() {
         setRowsPerPage(+event.target.value);
         setPage(0);
     };
-    
+
+    React.useEffect(() => {
+        const getUsers = async () => {
+            const data = await getDocs(userCollectionRef);
+            setUser(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+            // console.log(data.docs.map((doc) => doc.data()))
+        }
+        getUsers();
+        console.log(user)
+    }, [])
+
+    React.useEffect(() => {
+        console.log(user)
+    }, [user])
+
 
     return (
         <Paper sx={{ width: '100%', overflow: 'hidden' }}>
