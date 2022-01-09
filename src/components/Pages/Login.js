@@ -24,7 +24,7 @@ const Login = ({history}) => {
         if(form.email && form.password){
             UserSignIn(form.email, form.password)
                 .then(user => {
-                    history.push("/home")
+                    history.push("/peoplewearingmask")
                 })
                 .catch(error => {
                     alert(error.message)

@@ -24,7 +24,7 @@ function App() {
     {/* {user.hasOwnProperty("uid") &&<NavBar />} */}
       <Switch>
         <Route path="/" component={Login} exact />
-        <Route path="/home" component={Home} exact />
+        {/* <Route path="/home" component={Home} exact /> */}
         <Route path="/peoplewearingmask" component={PeopleWearingMask} />
         <Route path="/peoplenotwearingmask" component={PeopleNotWearingMask} />
       </Switch>

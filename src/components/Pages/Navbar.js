@@ -5,13 +5,13 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { Button, Grid} from '@mui/material';
 import { SignOut } from '../../firebase/Auth';
-const NavBar = () => {
+const NavBar = (history) => {
 
   const signOut = () => {
     SignOut().then(()=> {
-      
+      history.push("/")
     }).catch(err=> {
-
+      alert(err.message)
     })
   }
 
@@ -28,7 +28,7 @@ const NavBar = () => {
             justifyContent="flex-end"
           >
               <Grid>
-                <Button href="/home" color="inherit">Home</Button>
+                {/* <Button href="/home" color="inherit">Home</Button> */}
                 <Button href="/peoplewearingmask" color="inherit">People wearing mask</Button>
                 <Button href="/peoplenotwearingmask" color="inherit">People not wearing mask</Button>
                 <Button onClick={signOut} sx={{ml:"55px"}} variant="contained" color="error">Log out</Button>

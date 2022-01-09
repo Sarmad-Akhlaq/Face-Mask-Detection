@@ -13,6 +13,7 @@ import { db } from '../../../firebase/Firestore';
 import { collection, doc, getDocs } from '@firebase/firestore';
 import { Button } from '@material-ui/core';
 import { Image } from 'antd';
+import CircularIndeterminate from '../../Progess/Progress';
 
 const columns = [
     { id: 'img_location', label: 'Image' },
@@ -36,6 +37,7 @@ function createData(name, code, population, size) {
 export default function StickyHeadTable(props) {
     const { sort } = props;
     const [page, setPage] = React.useState(0);
+    const [isloaded, setIsLoaded] = React.useState(false);
     const userCollectionRef = collection(db, "fyp");
     const [user, setUser] = React.useState([]);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -55,9 +57,11 @@ export default function StickyHeadTable(props) {
 
     React.useEffect(() => {
         const getUsers = async () => {
+            setIsLoaded(false)
             const data = await getDocs(userCollectionRef);
             setUser(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
             // console.log(data.docs.map((doc) => doc.data()))
+            setIsLoaded(true)
         }
         getUsers();
         console.log(user)
@@ -70,7 +74,7 @@ export default function StickyHeadTable(props) {
 
     return (
         <Paper sx={{ width: '80vw', fontSize: "100px", color: "yellow", overflow: 'hidden' }}>
-            <TableContainer sx={{ maxHeight: 600 }}>
+            <TableContainer sx={{ maxHeight: 400 }}>
                 <Table stickyHeader aria-label="sticky table">
                     <TableHead>
                         <TableRow>
@@ -86,13 +90,15 @@ export default function StickyHeadTable(props) {
                             ))}
                         </TableRow>
                     </TableHead>
-                    <TableBody>
-                        {user
-                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                            .map((row) => {
-                                return (
-                                    <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                                        {/* {columns.map((column) => {
+                    {
+                        isloaded ? (
+                            <TableBody>
+                                {user
+                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                    .map((row) => {
+                                        return (
+                                            <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                                                {/* {columns.map((column) => {
                                             const value = row[column.id];
                                             console.log(row.img_location)
                                             return (
@@ -101,31 +107,35 @@ export default function StickyHeadTable(props) {
                                                     </TableCell>
                                             );
         20                           })} */}
-                                        {
-                                            row.status === sort ?
-                                                (<>
-                                                    <TableCell>
-                                                        <Image
-                                                            width={150}
-                                                            src={row.img_location}
-                                                        />
-                                                        {/* <img src={row.img_location} height="70px" width="100px"></img> */}
-                                                    </TableCell>
-                                                    <TableCell
-                                                        sx={{ fontSize: "25px", fontWeight: "5px" }}>{row.date}</TableCell>
-                                                    <TableCell
-                                                        sx={{ fontSize: "25px", fontWeight: "5px" }}>{row.messege}</TableCell>
-                                                    <TableCell
-                                                        sx={{ fontSize: "25px", fontWeight: "5px" }}>{row.status}</TableCell>
-                                                    {/* <TableCell><Button variant='outlined' color="secondary">View Image</Button></TableCell> */}
-                                                </>) : ""
-                                        }
 
-
-                                    </TableRow>
-                                );
-                            })}
-                    </TableBody>
+                                                {
+                                                    row.status === sort ?
+                                                        (<>
+                                                            {
+                                                                console.log(row.status)
+                                                            }
+                                                            <TableCell>
+                                                                <Image
+                                                                    width={100}
+                                                                    src={row.img_location}
+                                                                />
+                                                                {/* <img src={row.img_location} height="70px" width="100px"></img> */}
+                                                            </TableCell>
+                                                            <TableCell
+                                                                sx={{ fontSize: "25px", fontWeight: "5px" }}>{row.date}</TableCell>
+                                                            <TableCell
+                                                                sx={{ fontSize: "25px", fontWeight: "5px" }}>{row.messege}</TableCell>
+                                                            <TableCell
+                                                                sx={{ fontSize: "25px", fontWeight: "5px" }}>{row.status}</TableCell>
+                                                            {/* <TableCell><Button variant='outlined' color="secondary">View Image</Button></TableCell> */}
+                                                        </>) : console.log(row.status)
+                                                }
+                                            </TableRow>
+                                        );
+                                    })}
+                            </TableBody>
+                        ) : <CircularIndeterminate/>
+                    }
                 </Table>
             </TableContainer>
             <TablePagination
