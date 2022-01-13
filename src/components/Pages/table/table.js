@@ -7,20 +7,11 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import axios from 'axios';
-import firestore from '../../../firebase';
 import { db } from '../../../firebase/Firestore';
-import { collection, doc, getDocs } from '@firebase/firestore';
-import { Button, Box } from '@material-ui/core';
+import { collection, getDocs } from '@firebase/firestore';
+import { Box } from '@material-ui/core';
 import { Image } from 'antd';
 import CircularIndeterminate from '../../Progess/Progress';
-
-
-
-function createData(name, code, population, size) {
-    const density = population / size;
-    return { name, code, population, size, density };
-}
 
 export default function StickyHeadTable(props) {
     const columns = [
@@ -91,16 +82,6 @@ export default function StickyHeadTable(props) {
                                     .map((row) => {
                                         return (
                                             <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                                                {/* {columns.map((column) => {
-                                            const value = row[column.id];
-                                            console.log(row.img_location)
-                                            return (
-                                                <TableCell key={column.id} align={column.align}>
-                                                    {value}
-                                                    </TableCell>
-                                            );
-        20                           })} */}
-
                                                 {
                                                     row.status === sort ?
                                                         (<>
