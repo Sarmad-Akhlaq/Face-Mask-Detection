@@ -11,23 +11,11 @@ import axios from 'axios';
 import firestore from '../../../firebase';
 import { db } from '../../../firebase/Firestore';
 import { collection, doc, getDocs } from '@firebase/firestore';
-import { Button } from '@material-ui/core';
+import { Button, Box } from '@material-ui/core';
 import { Image } from 'antd';
 import CircularIndeterminate from '../../Progess/Progress';
 
-const columns = [
-    { id: 'img_location', label: 'Image' },
-    { id: 'date', label: 'Date' },
-    {
-        id: 'messege',
-        label: 'Message',
-        format: (value) => value.toLocaleString('en-US'),
-    },
-    {
-        id: 'status',
-        label: 'Status',
-    },
-];
+
 
 function createData(name, code, population, size) {
     const density = population / size;
@@ -35,6 +23,19 @@ function createData(name, code, population, size) {
 }
 
 export default function StickyHeadTable(props) {
+    const columns = [
+        { id: 'img_location', label: 'Image' },
+        { id: 'date', label: 'Date' },
+        {
+            id: 'messege',
+            label: 'Message',
+            format: (value) => value.toLocaleString('en-US'),
+        },
+        {
+            id: 'status',
+            label: 'Status',
+        },
+    ];
     const { sort } = props;
     const [page, setPage] = React.useState(0);
     const [isloaded, setIsLoaded] = React.useState(false);
@@ -55,26 +56,20 @@ export default function StickyHeadTable(props) {
         setPage(0);
     };
 
+    const getUsers = async () => {
+        setIsLoaded(false)
+        const data = await getDocs(userCollectionRef);
+        setUser(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+        // console.log(data.docs.map((doc) => doc.data()))
+        setIsLoaded(true)
+    }
     React.useEffect(() => {
-        const getUsers = async () => {
-            setIsLoaded(false)
-            const data = await getDocs(userCollectionRef);
-            setUser(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-            // console.log(data.docs.map((doc) => doc.data()))
-            setIsLoaded(true)
-        }
         getUsers();
-        console.log(user)
     }, [])
-
-    React.useEffect(() => {
-        console.log(user)
-    }, [user])
-
 
     return (
         <Paper sx={{ width: '80vw', fontSize: "100px", color: "yellow", overflow: 'hidden' }}>
-            <TableContainer sx={{ maxHeight: 400 }}>
+            {isloaded  ? <TableContainer sx={{ maxHeight: 400 }}>
                 <Table stickyHeader aria-label="sticky table">
                     <TableHead>
                         <TableRow>
@@ -90,8 +85,6 @@ export default function StickyHeadTable(props) {
                             ))}
                         </TableRow>
                     </TableHead>
-                    {
-                        isloaded ? (
                             <TableBody>
                                 {user
                                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -134,10 +127,8 @@ export default function StickyHeadTable(props) {
                                         );
                                     })}
                             </TableBody>
-                        ) : <CircularIndeterminate/>
-                    }
                 </Table>
-            </TableContainer>
+            </TableContainer> : <Box sx={{height : "150px" ,marginTop: "15px"}}> <CircularIndeterminate /></Box>}
             <TablePagination
                 rowsPerPageOptions={[10, 25, 100]}
                 component="div"

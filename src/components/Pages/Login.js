@@ -28,7 +28,8 @@ const Login = ({history}) => {
                 })
                 .catch(error => {
                     alert(error.message)
-                })        
+                })
+                setForm("")        
         }
         else {
             alert("please enter email and password")

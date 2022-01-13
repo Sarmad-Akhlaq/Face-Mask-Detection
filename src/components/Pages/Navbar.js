@@ -1,14 +1,17 @@
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
+import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { Button, Grid} from '@mui/material';
 import { SignOut } from '../../firebase/Auth';
-const NavBar = (history) => {
+import { withRouter } from 'react-router-dom/cjs/react-router-dom.min';
+const NavBar = ({history}) => {
 
   const signOut = () => {
     SignOut().then(()=> {
+      console.log(history)
       history.push("/")
     }).catch(err=> {
       alert(err.message)
@@ -19,19 +22,22 @@ const NavBar = (history) => {
     <Box>
       <AppBar position="static" style={{backgroundColor: "darkred"}}>
         <Toolbar variant="dense">
-          <Typography variant="h6" color="inherit" component="div" width="250px">
+          <Typography variant="h6" component="div" width="250px">
             Face Mask Detection
           </Typography>
           <Grid
             container
             direction="row"
             justifyContent="flex-end"
-          >
-              <Grid>
-                {/* <Button href="/home" color="inherit">Home</Button> */}
-                <Button href="/peoplewearingmask" color="inherit">People wearing mask</Button>
-                <Button href="/peoplenotwearingmask" color="inherit">People not wearing mask</Button>
-                <Button onClick={signOut} sx={{ml:"55px"}} variant="contained" color="error">Log out</Button>
+         >
+              <Grid
+              container
+              display="flex"
+              justifyContent="space-evenly" 
+              >
+                <Button onClick={() => history.push("/peoplewearingmask")} color="inherit">People wearing mask</Button>
+                <Button onClick={() => history.push("/peoplenotwearingmask")} color="inherit">People not wearing mask</Button>
+                <Button onClick={signOut} variant="contained" color="primary">Log out</Button>
               </Grid>
           </Grid>
         </Toolbar>
@@ -40,4 +46,4 @@ const NavBar = (history) => {
   );
 }
 
-export default NavBar;
+export default withRouter(NavBar);
