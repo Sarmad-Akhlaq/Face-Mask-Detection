@@ -27,6 +27,8 @@ export default function StickyHeadTable(props) {
             label: 'Status',
         },
     ];
+    // var filteredData = [];
+    const [filterData, setFiterData] = React.useState([]);
     const { sort } = props;
     const [page, setPage] = React.useState(0);
     const [isloaded, setIsLoaded] = React.useState(false);
@@ -53,14 +55,22 @@ export default function StickyHeadTable(props) {
         setUser(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
         // console.log(data.docs.map((doc) => doc.data()))
         setIsLoaded(true)
+        // console.log(sort)
+
     }
     React.useEffect(() => {
         getUsers();
     }, [])
+    React.useEffect(() => {
+        setFiterData(user.filter(item => item.status === sort).map((filterItem) => {
+            return filterItem.status === sort ? filterItem : ""
+        }))
+    }, [user])
 
+    console.log(filterData)
     return (
         <Paper sx={{ width: '80vw', fontSize: "100px", color: "yellow", overflow: 'hidden' }}>
-            {isloaded  ? <TableContainer sx={{ maxHeight: 400 }}>
+            {isloaded ? <TableContainer sx={{ maxHeight: 400 }}>
                 <Table stickyHeader aria-label="sticky table">
                     <TableHead>
                         <TableRow>
@@ -76,40 +86,34 @@ export default function StickyHeadTable(props) {
                             ))}
                         </TableRow>
                     </TableHead>
-                            <TableBody>
-                                {user
-                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                    .map((row) => {
-                                        return (
-                                            <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                                                {
-                                                    row.status === sort ?
-                                                        (<>
-                                                            {
-                                                                console.log(row.status)
-                                                            }
-                                                            <TableCell>
-                                                                <Image
-                                                                    width={100}
-                                                                    src={row.img_location}
-                                                                />
-                                                                {/* <img src={row.img_location} height="70px" width="100px"></img> */}
-                                                            </TableCell>
-                                                            <TableCell
-                                                                sx={{ fontSize: "25px", fontWeight: "5px" }}>{row.date}</TableCell>
-                                                            <TableCell
-                                                                sx={{ fontSize: "25px", fontWeight: "5px" }}>{row.messege}</TableCell>
-                                                            <TableCell
-                                                                sx={{ fontSize: "25px", fontWeight: "5px" }}>{row.status}</TableCell>
-                                                            {/* <TableCell><Button variant='outlined' color="secondary">View Image</Button></TableCell> */}
-                                                        </>) : console.log(row.status)
-                                                }
-                                            </TableRow>
-                                        );
-                                    })}
-                            </TableBody>
+                    <TableBody>
+                        {filterData
+                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                            .map((row) => {
+                                return (
+                                    <TableRow hover role="checkbox" tabIndex={-1} key={row.date}>
+
+                                        <TableCell>
+                                            <Image
+                                                width={100}
+                                                src={row.img_location}
+                                            />
+                                            {/* <img src={row.img_location} height="70px" width="100px"></img> */}
+                                        </TableCell>
+                                        <TableCell
+                                            sx={{ fontSize: "25px", fontWeight: "5px" }}>{row.date}</TableCell>
+                                        <TableCell
+                                            sx={{ fontSize: "25px", fontWeight: "5px" }}>{row.messege}</TableCell>
+                                        <TableCell
+                                            sx={{ fontSize: "25px", fontWeight: "5px" }}>{row.status}</TableCell>
+                                        {/* <TableCell><Button variant='outlined' color="secondary">View Image</Button></TableCell> */}
+
+                                    </TableRow>
+                                );
+                            })}
+                    </TableBody>
                 </Table>
-            </TableContainer> : <Box sx={{height : "150px" ,marginTop: "15px"}}> <CircularIndeterminate /></Box>}
+            </TableContainer> : <Box sx={{ height: "150px", marginTop: "15px" }}> <CircularIndeterminate /></Box>}
             <TablePagination
                 rowsPerPageOptions={[10, 25, 100]}
                 component="div"
@@ -119,6 +123,9 @@ export default function StickyHeadTable(props) {
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
             />
+
+
         </Paper>
+
     );
 }
