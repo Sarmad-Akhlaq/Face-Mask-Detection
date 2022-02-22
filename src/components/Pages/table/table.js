@@ -12,6 +12,9 @@ import { collection, getDocs } from '@firebase/firestore';
 import { Box } from '@material-ui/core';
 import { Image } from 'antd';
 import CircularIndeterminate from '../../Progess/Progress';
+import { Button } from '@mui/material';
+// import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
+import RotateRightIcon from '@material-ui/icons/RotateRight';
 
 export default function StickyHeadTable(props) {
     const columns = [
@@ -69,63 +72,73 @@ export default function StickyHeadTable(props) {
 
     console.log(filterData)
     return (
-        <Paper sx={{ width: '80vw', fontSize: "100px", color: "yellow", overflow: 'hidden' }}>
-            {isloaded ? <TableContainer sx={{ maxHeight: 400 }}>
-                <Table stickyHeader aria-label="sticky table">
-                    <TableHead>
-                        <TableRow>
-                            {columns.map((column) => (
-                                <TableCell
-                                    sx={{ fontSize: "25px", fontWeight: "5px" }}
-                                    key={column.id}
-                                    align={column.align}
-                                    style={{ minWidth: column.minWidth }}
-                                >
-                                    {column.label}
-                                </TableCell>
-                            ))}
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {filterData
-                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                            .map((row) => {
-                                return (
-                                    <TableRow hover role="checkbox" tabIndex={-1} key={row.date}>
+        <>
+            <div style={{ display:'flex', alignItems:'right', justifyContent:'right' }}>
+               
+               <Button onClick={getUsers} color="primary" variant="contained" ><RotateRightIcon /></Button> 
+               {/* <button style={{border:'1px solid black', borderRadius:'4px', backgroundColor:'transparent', cursor:'pointer'}} >refresh</button> */}
+            </div>
+            <Paper sx={{ width: '80vw', fontSize: "100px", color: "yellow", overflow: 'hidden' }}>
+                {isloaded ? <TableContainer sx={{ maxHeight: 400 }}>
+                    <Table stickyHeader aria-label="sticky table">
+                        <TableHead>
+                            <TableRow>
+                                {columns.map((column) => (
+                                    <TableCell
+                                        sx={{ fontSize: "25px", fontWeight: "5px" }}
+                                        key={column.id}
+                                        align={column.align}
+                                        style={{ minWidth: column.minWidth }}
+                                    >
+                                        {column.label}
+                                    </TableCell>
+                                ))}
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {filterData
+                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                .map((row) => {
+                                    return (
+                                        <>
 
-                                        <TableCell>
-                                            <Image
-                                                width={100}
-                                                src={row.img_location}
-                                            />
-                                            {/* <img src={row.img_location} height="70px" width="100px"></img> */}
-                                        </TableCell>
-                                        <TableCell
-                                            sx={{ fontSize: "25px", fontWeight: "5px" }}>{row.date}</TableCell>
-                                        <TableCell
-                                            sx={{ fontSize: "25px", fontWeight: "5px" }}>{row.messege}</TableCell>
-                                        <TableCell
-                                            sx={{ fontSize: "25px", fontWeight: "5px" }}>{row.status}</TableCell>
-                                        {/* <TableCell><Button variant='outlined' color="secondary">View Image</Button></TableCell> */}
+                                            <TableRow hover role="checkbox" tabIndex={-1} key={row.date}>
 
-                                    </TableRow>
-                                );
-                            })}
-                    </TableBody>
-                </Table>
-            </TableContainer> : <Box sx={{ height: "150px", marginTop: "15px" }}> <CircularIndeterminate /></Box>}
-            <TablePagination
-                rowsPerPageOptions={[10, 25, 100]}
-                component="div"
-                count={rows.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-            />
+                                                <TableCell>
+                                                    <Image
+                                                        width={100}
+                                                        src={row.img_location}
+                                                    />
+                                                    {/* <img src={row.img_location} height="70px" width="100px"></img> */}
+                                                </TableCell>
+                                                <TableCell
+                                                    sx={{ fontSize: "25px", fontWeight: "5px" }}>{row.date}</TableCell>
+                                                <TableCell
+                                                    sx={{ fontSize: "25px", fontWeight: "5px" }}>{row.messege}</TableCell>
+                                                <TableCell
+                                                    sx={{ fontSize: "25px", fontWeight: "5px" }}>{row.status}</TableCell>
+                                                {/* <TableCell><Button variant='outlined' color="secondary">View Image</Button></TableCell> */}
+
+                                            </TableRow>
+                                        </>
+                                    );
+                                })}
+                        </TableBody>
+                    </Table>
+                </TableContainer> : <Box sx={{ height: "150px", marginTop: "15px" }}> <CircularIndeterminate /></Box>}
+                <TablePagination
+                    rowsPerPageOptions={[10, 25, 100]}
+                    component="div"
+                    count={filterData.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                />
 
 
-        </Paper>
+            </Paper>
+        </>
 
     );
 }
